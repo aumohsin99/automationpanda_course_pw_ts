@@ -55,6 +55,13 @@ test("Create a new board with a list and cards", async ({ page }) => {
   await page.getByPlaceholder("Enter a title for this card...").fill("Task 3");
   await page.getByRole("button", { name: "Add card" }).click();
 
+  //confirmation of tasks on page
+  await expect(page.locator('[data-cy="card-text"]')).toHaveText([
+    "Task 1",
+    "Task 2",
+    "Task 3",
+  ]);
+
   await page.getByRole("navigation").getByRole("button").click();
   await page.getByRole("heading", { name: "Board1" }).click();
 });
