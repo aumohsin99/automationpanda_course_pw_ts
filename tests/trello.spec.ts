@@ -1,47 +1,40 @@
-import exp from "constants";
-
-import { request } from "http";
-
 import { test, expect } from "./fixtures/trello-test";
 
-test.beforeAll(async ({ request }) => {
-  // I don't know what's going on here.
-  // following the rat race
-  await request.post("http://localhost:3000/api/reset");
-});
+test.describe("Trello like board", () => {
+  const boardName = "MyBoard";
+  const listName = "ToDosList";
 
-// test('Create a new board with a list and cards', async ({ page }) => {
+  test.beforeEach(async ({ request, getStartedPage }) => {
+    await request.post("http://localhost:3000/api/reset");
+    await getStartedPage.load();
+    await getStartedPage.createFirstBoard(boardName);
+  });
 
-test("Create a new board with a list and cards", async ({
-  getStartedPage,
-  boardPage,
-  myBoardsPage,
-}) => {
-  // POM Implementation
-  //   const getStartedPage = new GetStartedPage(page);
-  //   const boardPage = new BoardPage(page);
-  //   const myBoardsPage = new MyBoardsPage(page);
+  test("should create first board", async ({ boardPage }) => {
+    await boardPage.expectNewBoardLoaded(boardName);
+  });
 
-  await getStartedPage.load();
-  await getStartedPage.createFirstBoard("Board1");
-  await boardPage.expectNewBoardLoaded("Board1");
+  test("should create first list in board", async ({ boardPage }) => {
+    await boardPage.addList(listName);
+    await expect(boardPage.listName).toHaveValue(listName);
+  });
 
-  await boardPage.addList("list1");
-  await expect(boardPage.listName).toHaveValue("list1");
+  test("add new cards to first list", async ({ boardPage }) => {
+    await boardPage.addList(listName);
+    await boardPage.addCardToList(0, "Task 1");
+    await boardPage.addCardToList(0, "Task 2");
+    await boardPage.addCardToList(0, "Task 3");
 
-  await boardPage.addCardToList(0, "Task 1");
-  await boardPage.addCardToList(0, "Task 2");
+    //confirmation of tasks on page
+    await expect(boardPage.cardsLocator).toHaveText([
+      "Task 1",
+      "Task 2",
+      "Task 3",
+    ]);
+  });
 
-  await boardPage.addCardToList(0, "Task 3");
-
-  //confirmation of tasks on page
-  await expect(boardPage.cardsLocator).toHaveText([
-    "Task 1",
-    "Task 2",
-    "Task 3",
-  ]);
-
-  await boardPage.goHome();
-
-  await myBoardsPage.expectLoaded(["Board1"]);
+  test("should navigate to home", async ({ boardPage, myBoardsPage }) => {
+    await boardPage.goHome();
+    await myBoardsPage.expectLoaded([boardName]);
+  });
 });
