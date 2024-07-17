@@ -5,9 +5,9 @@ This repository hosts a Playwright practice project built using TypeScript. In t
 ## Resources
 
 - [Automation Panda Playwright Repository](https://github.com/AutomationPanda/awesome-web-testing-playwright)
-  -- followed step by step instructions from this repo
+  - followed step by step instructions from this repo
 - [Sample Trello Project Repository](https://github.com/filiphric/trelloapp-vue-vite-ts)
-  -- developed and executed tests for this repo locally
+  - developed and executed tests for this repo locally
 
 ## Introduction
 
