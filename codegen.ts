@@ -1,0 +1,22 @@
+await page.goto("http://localhost:3000/");
+await page.getByRole("heading", { name: "Create new board" }).click();
+await page.getByPlaceholder("Add board title").fill("MBoard1");
+await page.getByRole("button", { name: "Create board" }).click();
+
+await page.locator('input[name="board-title"]').click();
+await page.getByRole("navigation").getByRole("button").click();
+await page.getByRole("heading", { name: "MBoard1" }).click();
+await page.getByRole("navigation").getByRole("button").click();
+await page.getByRole("heading", { name: "Create new board" }).click();
+await page.getByPlaceholder("Add board title").press("CapsLock");
+await page.getByPlaceholder("Add board title").fill("MB");
+await page.getByPlaceholder("Add board title").press("CapsLock");
+await page.getByPlaceholder("Add board title").fill("MBoard2");
+await page.getByRole("button", { name: "Create board" }).click();
+await page.getByRole("textbox").click();
+await page.getByRole("navigation").getByRole("button").click();
+await page.getByRole("heading", { name: "MBoard2" }).click();
+await page.getByRole("navigation").getByRole("button").click();
+await page.getByRole("heading", { name: "MBoard1" }).click();
+await page.getByRole("navigation").getByRole("button").click();
+await page.getByRole("heading", { name: "MBoard2" }).click();

@@ -1,8 +1,14 @@
 import { test, expect } from "./fixtures/trello-test";
+import { MyBoardsPage } from "./pages/my-boards";
 
 test.describe("Trello like board", () => {
   let boardName: string;
   const listName = "ToDosList";
+
+  test.beforeAll(async ({ request }) => {
+    // clear db
+    await request.post("http://localhost:3000/api/reset");
+  });
 
   test.beforeEach(async ({ request, myBoardsPage }) => {
     const randomNumber = Math.trunc(Math.random() * 1000000);
@@ -40,5 +46,20 @@ test.describe("Trello like board", () => {
   test("should navigate to home", async ({ boardPage, myBoardsPage }) => {
     await boardPage.goHome();
     await myBoardsPage.expectLoaded([boardName]);
+  });
+
+  test("should create 'n' boards", async ({ boardPage, myBoardsPage }) => {
+    let listOfBoardNames: string[] = [];
+
+    // n number of boards task
+    for (let index = 0; index < Math.random() * 10; index++) {
+      await boardPage.goHome();
+      let boardName: string = await myBoardsPage.createNewBoard();
+      listOfBoardNames.push(boardName);
+      await boardPage.expectNewBoardLoaded(listOfBoardNames[index]);
+    }
+
+    await boardPage.goHome();
+    await myBoardsPage.expectLoaded(listOfBoardNames);
   });
 });
