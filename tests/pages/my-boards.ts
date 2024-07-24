@@ -7,6 +7,7 @@ export class MyBoardsPage {
   readonly newBoardButton: Locator;
   readonly newBoardName: Locator;
   readonly createBoardButton: Locator;
+  private randomBoardLocator: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -16,6 +17,8 @@ export class MyBoardsPage {
     });
     this.newBoardName = page.getByPlaceholder("Add board title");
     this.createBoardButton = page.getByRole("button", { name: "Create board" });
+    //this.randomBoardLocator= page.getByRole("heading", { name?: hello})
+    this.randomBoardLocator = this.page.locator("board");
   }
 
   async load() {
@@ -34,6 +37,20 @@ export class MyBoardsPage {
 
   async openBoard(boardName: string) {
     await this.page.getByText(boardName).click();
+  }
+
+  async openRandomBoard(index: number) {
+    // this.randomBoardLocator = this.page.getByRole("heading", {
+    //   name: "MyBoard919829",
+    // });
+
+    await this.randomBoardLocator.nth(index);
+    //await this.page.randomBoardLocator.click();
+    //await this.page.ra;
+
+    //await this.page.getByText(boardName).click();
+
+    //this.randomBoardLocator =
   }
 
   async expectLoaded(boardNames: string[]) {

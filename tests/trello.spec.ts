@@ -61,5 +61,15 @@ test.describe("Trello like board", () => {
 
     await boardPage.goHome();
     await myBoardsPage.expectLoaded(listOfBoardNames);
+
+    //refresh and check if all boards have loaded again
+    await myBoardsPage.load();
+    await myBoardsPage.expectLoaded(listOfBoardNames);
+    //await expect length(listOfBoardNames).toHaveValue
+  });
+
+  test("delete one specific board", async ({ boardPage, myBoardsPage }) => {
+    await boardPage.goHome();
+    await myBoardsPage.openRandomBoard(0);
   });
 });
